@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Created by oss-lvr (https://github.com/oss-lvr)
+# View checksum of any file from Caja
+
+if [ $CAJA_SCRIPT_SELECTED_FILE_PATHS -eq $IFS ]
+then
+	zenity --info --text='No files selected, exiting' --title='Checksum'
+else
+	#Get what the user wants
+	ans=$(zenity  --list  --text "Select the method" --title='Checksum' --radiolist  --column "Pick" --column "options" TRUE "md5sum" FALSE "sha1sum" FALSE "sha256sum" FALSE "sha512sum")
+	if [ $ans -eq $IFS ]
+	then
+		zenity --info --text='Nothing to do, exiting' --title='Checksum'
+	else
+		# By default, space is delimiter, changing it temporarily to new line
+		IFS_BAK=$IFS
+		IFS="
+		"
+
+		# Iterateover file names
+		for file in $CAJA_SCRIPT_SELECTED_FILE_PATHS
+		   do
+			 $($ans $file 2>&1|tee >(zenity --progress --pulsate --no-cancel --auto-close --text='Computing '$ans' of '$file) |xargs -0 -I {} zenity --info --text={} --title=$ans)
+		done
+
+		# Reset delimiter to space
+		IFS=$IFS_BAK
+	fi
+fi

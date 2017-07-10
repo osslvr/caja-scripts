@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Created by oss-lvr (https://github.com/oss-lvr)
+# For unmounting FUSE volumes, since Nautilus/Caja does not support unmounting FUSE volumes.
+
+fuseMounts=`mount -t fuse.sshfs,fuse.encfs`
+if [ "$fuseMounts" != "" ]; then
+	msgBox="/usr/bin/zenity  --separator=' ' --list  --text 'Select the volumes to unmount' --title='FUSE unmounter' --checklist  --column 'Select' --column 'Mountpoints'"
+	while read -r line; do
+		arr=($line)
+		msgBox+=" FALSE '${arr[2]}'"
+	done <<< "$fuseMounts"
+	selectedMounts=$(eval "$msgBox")
+	for mount in $selectedMounts
+	do
+		fusermount -uz $mount
+	done
+else
+	zenity --info --text="No FUSE volumes mounted" --title="FUSE unmounter"
+fi

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Created by oss-lvr (https://github.com/oss-lvr)
+# Open a terminal from anywhere
+
+mate-terminal $CAJA_SCRIPT_CURRENT_URI
