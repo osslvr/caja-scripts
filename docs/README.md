@@ -1,5 +1,5 @@
 # caja-scripts
-This is a repository for Caja scripts created by me. The same scripts may be used for Nautilus with minor modifications.
+This is a repository for Caja scripts created by me.
 
 ### Dependencies
 On a debian machine with MATE desktop, I haven't installed anything specific. For interactive menus and messages, `zenity` is used. If you don't have `zenity`, please install it.
